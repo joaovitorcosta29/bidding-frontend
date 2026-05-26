@@ -4,8 +4,10 @@
  */
 package com.bidding.system.frontend.controller;
 
+import com.bidding.system.frontend.model.UserDTO;
 import com.bidding.system.frontend.model.UserRequestDTO;
 import com.bidding.system.frontend.service.AuthService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,7 +19,7 @@ import org.springframework.web.bind.annotation.PostMapping;
  *
  * @author Aluno
  */
-@Controller // Controller retorna html e restController retorna texto.
+@Controller // Controller retorna html e restController retorna texto. todos retorna string no @controller
 public class AuthController {
     
     @Autowired 
@@ -36,8 +38,24 @@ public class AuthController {
     }
     
     @PostMapping("/logar")
-    public String logar(@ModelAttribute UserRequestDTO credenciais){
-        
-        return "index";
+    public String logar(@ModelAttribute UserRequestDTO credenciais, HttpSession session){
+        String token = authService.logar(credenciais);
+        System.out.println("token: "+token);
+        session.setAttribute("token", token);
+        return "redirect:/editais";
+    }
+    
+    
+    @GetMapping("/registrar")
+    public String registrar(Model model){
+        UserDTO newUser = new UserDTO();
+        model.addAttribute("user", newUser);
+        return "registrar";
+    }
+    
+    @PostMapping("/registrar")
+    public String mandarRegistro(@ModelAttribute UserDTO user){
+        authService.registrar(user);
+        return "redirect:/login";
     }
 }

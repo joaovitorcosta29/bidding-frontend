@@ -4,11 +4,13 @@
  */
 package com.bidding.system.frontend.service;
 
+import com.bidding.system.frontend.model.EditalDTO;
+import com.bidding.system.frontend.model.UserDTO;
 import com.bidding.system.frontend.model.UserRequestDTO;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpMethod;
+import java.util.Arrays;
+import java.util.List;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.client.RestClient;
 
 /**
  *
@@ -16,17 +18,56 @@ import org.springframework.web.client.RestTemplate;
  */
 @Service
 public class AuthService {
-    private RestTemplate restTemplate = new RestTemplate();
-    private final String BASE_URL = "http://localhost:9000";
     
-    public String logar(UserRequestDTO user){
-        HttpEntity<UserRequestDTO> body = new HttpEntity<>(user); 
-        return restTemplate.exchange
-                (BASE_URL + "/auth/logar", 
-                HttpMethod.POST,
-                body,
-                String.class).getBody();
-        
+    private final RestClient restClient;
+
+    /**
+     * Construtor padrão do serviço.
+     *
+     * Aqui criamos o RestClient apenas uma vez e configuramos a URL base
+     * comum para todas as requisições deste serviço.
+     */
+    public AuthService() {
+        this.restClient = RestClient.builder()
+                // Define a base URL que será usada em todas as requisições.
+                // Depois, cada chamada só precisa informar o caminho relativo.
+                .baseUrl("http://localhost:8081/api")
+                .build();
+    }
+
+    /**
+     * Envia as credenciais do usuário para o endpoint de login.
+     *
+     * @param user objeto DTO contendo email e senha
+     * @return token ou resposta de autenticação como String
+     */
+    public String logar(UserRequestDTO user) {
+        return restClient.post()
+                // A URL final será "http://localhost:8081/api/auth/logar".
+                .uri("/autenticar/logar")
+                .body(user)
+                .retrieve()
+                .body(String.class);
     }
     
+    public void registrar(UserDTO user ) {
+        user.setRole("FORNECEDOR");
+        String retorno = 
+            restClient
+                .post()
+                .uri("/autenticar/registrar")
+                .body(user)
+                .retrieve()
+                .body(String.class);
+    }
+
+    public List<EditalDTO> listarEditais(String token) {
+        EditalDTO[] editais = restClient.get()
+                .uri("/editais")
+                .header("Authorization", "Bearer " + token)
+                .retrieve()
+                .body(EditalDTO[].class);
+
+        return Arrays.asList(editais);
+    }
 }
