@@ -5,22 +5,46 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
 -->
 <html xmlns: th="http://www.thymleaf.org">
     <head>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
         <title>Login</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
-    <body>
-        <h2>Login</h2>
-        <form     th:action="@{/logar}" th:object="${credenciais}" method="post">
-            <label>E-mail: </label>
-            <input type="email" th:field="*{email}"/>
-            <br/><br/>
+    <body> 
+        <div class="p-1 mb-80 bg-primary text-white"></div>
+        
+        <div class="d-flex justify-content-center align-items-center" style="min-height: 80vh;">
             
-            <label>Senha: </label>
-            <input type="password" th:field="*{senha}" />
-            <br/><br/>
+            <div class="card text-center" style="width: 350px;">
+                <div class="card-header">
+                    Login
+                </div>
+                <br/>
+                
+                <div class="container">
+                    <h2>Fazer Login</h2>
+                    <form th:action="@{/logar}" th:object="${credenciais}" method="post">
+                        <br/>
+                        
+                        <div class="form-floating mb-3 text-start">
+                          <input type="email" class="form-control" id="floatingInput" placeholder="nome@gmail.com" th:field="*{email}">
+                          <label for="floatingInput">E-mail</label>
+                          <br>
+                        </div>
+                        
+                        <div class="form-floating mb-3 text-start">
+                          <input type="password" class="form-control" id="floatingPassword" placeholder="Senha" th:field="*{senha}">
+                          <label for="floatingPassword">Senha</label>
+                          <br>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">Logar</button>
+                    </form>
+                    <br>
+                </div>
+                
+            </div>
             
-            <button type="submit">Logar</button>
-        </form>
+        </div>
     </body>
 </html>
