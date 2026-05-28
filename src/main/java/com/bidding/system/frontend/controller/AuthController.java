@@ -42,9 +42,8 @@ public class AuthController {
         String token = authService.logar(credenciais);
         System.out.println("token: "+token);
         session.setAttribute("token", token);
-        return "redirect:/editais";
+        return "redirect:/";
     }
-    
     
     @GetMapping("/registrar")
     public String registrar(Model model){
@@ -56,6 +55,12 @@ public class AuthController {
     @PostMapping("/registrar")
     public String mandarRegistro(@ModelAttribute UserDTO user){
         authService.registrar(user);
+        return "redirect:/login";
+    }
+    
+    @GetMapping("/logout")
+    public String logout(HttpSession session){
+        session.setAttribute("token", "");
         return "redirect:/login";
     }
 }

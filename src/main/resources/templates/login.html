@@ -1,9 +1,5 @@
 <!DOCTYPE html>
-<!--
-Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
-Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this template
--->
-<html xmlns: th="http://www.thymleaf.org">
+<html xmlns:th="http://www.thymeleaf.org">
     <head>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
         <title>Login</title>
@@ -11,40 +7,41 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
     <body> 
-        <div class="p-1 mb-80 bg-primary text-white"></div>
-        
-        <div class="d-flex justify-content-center align-items-center" style="min-height: 80vh;">
-            
-            <div class="card text-center" style="width: 350px;">
-                <div class="card-header">
-                    Login
-                </div>
-                <br/>
+        <div class="p-1 bg-primary text-white"></div>
+
+        <div class="d-flex justify-content-center align-items-center" style="min-height: 90vh;">
+
+            <div class="card shadow-sm" style="width: 400px;;border-radius: 10px; overflow: hidden;">
                 
-                <div class="container">
-                    <h2>Fazer Login</h2>
+                <div class="card-header bg-primary text-white py-3 text-center">
+                    <h4 class="mb-0 fw-bold">Fazer Login</h4>
+                </div>
+
+                <div class="card-body p-4">
                     <form th:action="@{/logar}" th:object="${credenciais}" method="post">
-                        <br/>
-                        
+
                         <div class="form-floating mb-3 text-start">
-                          <input type="email" class="form-control" id="floatingInput" placeholder="nome@gmail.com" th:field="*{email}">
-                          <label for="floatingInput">E-mail</label>
-                          <br>
-                        </div>
-                        
-                        <div class="form-floating mb-3 text-start">
-                          <input type="password" class="form-control" id="floatingPassword" placeholder="Senha" th:field="*{senha}">
-                          <label for="floatingPassword">Senha</label>
-                          <br>
+                            <input type="email" class="form-control" id="floatingInput" placeholder="" th:field="*{email}">
+                            <label for="floatingInput">E-mail</label>
                         </div>
 
-                        <button type="submit" class="btn btn-primary">Logar</button>
+                        <div class="form-floating mb-4 text-start">
+                            <input type="password" class="form-control" id="floatingPassword" placeholder="" th:field="*{senha}">
+                            <label for="floatingPassword">Senha</label>
+                        </div>
+
+                        <div class="d-grid gap-2 mb-3">
+                            <button type="submit" class="btn btn-primary py-2 fw-bold">Entrar</button>
+                        </div>
+                        
+                        <div class="text-center small text-muted">
+                            Não tem uma conta? <a class="text-primary fw-bold text-decoration-none" href="./registrar">Cadastre-se</a>
+                        </div>
                     </form>
-                    <br>
                 </div>
-                
+
             </div>
-            
+
         </div>
     </body>
 </html>

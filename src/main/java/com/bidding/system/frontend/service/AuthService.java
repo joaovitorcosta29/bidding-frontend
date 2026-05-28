@@ -31,7 +31,7 @@ public class AuthService {
         this.restClient = RestClient.builder()
                 // Define a base URL que será usada em todas as requisições.
                 // Depois, cada chamada só precisa informar o caminho relativo.
-                .baseUrl("http://localhost:8081/api")
+                .baseUrl("http://localhost:9000/api")
                 .build();
     }
 
@@ -44,7 +44,7 @@ public class AuthService {
     public String logar(UserRequestDTO user) {
         return restClient.post()
                 // A URL final será "http://localhost:8081/api/auth/logar".
-                .uri("/autenticar/logar")
+                .uri("/auth/logar")
                 .body(user)
                 .retrieve()
                 .body(String.class);
@@ -55,7 +55,7 @@ public class AuthService {
         String retorno = 
             restClient
                 .post()
-                .uri("/autenticar/registrar")
+                .uri("/auth/registrar")
                 .body(user)
                 .retrieve()
                 .body(String.class);
