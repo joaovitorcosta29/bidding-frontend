@@ -9,8 +9,10 @@ import com.bidding.system.frontend.model.UserDTO;
 import com.bidding.system.frontend.model.UserRequestDTO;
 import java.util.Arrays;
 import java.util.List;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
+import org.springframework.web.server.ResponseStatusException;
 
 /**
  *
@@ -50,7 +52,10 @@ public class AuthService {
                 .body(String.class);
     }
     
-    public void registrar(UserDTO user ) {
+    public void registrar(UserDTO user) {
+        if(!user.getSenha().equals(user.getConfirmarSenha())){
+            throw new ResponseStatusException(HttpStatusCode.valueOf(400), "A Senha e Confirmar Senha são Diferentes");
+        }
         user.setRole("FORNECEDOR");
         String retorno = 
             restClient

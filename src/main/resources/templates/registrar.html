@@ -35,10 +35,9 @@
                             <label for="floatingSenha">Senha</label>
                         </div>
                         <div class="form-floating mb-4 text-start">
-                            <input type="password" class="form-control" id="floatingSenha2" placeholder="">
+                            <input type="password" class="form-control" id="ConfirmarSenha" placeholder="" th:field="*{confirmarSenha}">
                             <label for="floatingSenha">Confirmar Senha</label>
-                        </div>
-
+                        </div> 
                         <div class="d-grid gap-2 mb-3">
                             <button type="submit" class="btn btn-primary py-2 fw-bold">Cadastrar</button>
                         </div>
@@ -46,11 +45,20 @@
                         <div class="text-center small text-muted">
                             Já tem uma conta? <a class="text-primary fw-bold text-decoration-none" href="./login">Entrar</a>
                         </div>
+                        <div 
+                            th:if="${erroServidor}" 
+                            class="alert alert-danger" 
+                            style="color: #ef4444; background: rgba(239, 68, 68, 0.1);
+                            padding: 12px; border-radius: 6px; margin-bottom: 15px;"
+                            >
+                            <span th:text="${eroServidor}">Erro padrão</span>
+                        </div>
                     </form>
                 </div>
 
             </div>
 
         </div>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
     </body>
 </html>
