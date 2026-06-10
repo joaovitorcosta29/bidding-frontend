@@ -25,83 +25,81 @@ import tools.jackson.databind.ObjectMapper;
  */
 @Controller // Controller retorna html e restController retorna texto. todos retorna string no @controller
 public class AuthController {
-    
-    @Autowired 
+
+    @Autowired
     private AuthService authService;
-    
+
     @GetMapping("/")
     public String home(HttpSession session) {
-       Object token = session.getAttribute("token");
-       if(token == (null)){
-           return "redirect:/login";
-       }
-       return "index";
+        Object token = session.getAttribute("token");
+        if (token == (null)) {
+            return "redirect:/login";
+        }
+        return "index";
     }
-    
+
     @GetMapping("/login")
-    public String login(Model model){
+    public String login(Model model) {
         UserRequestDTO credenciais = new UserRequestDTO();
         model.addAttribute("credenciais", credenciais);
         return "login";
     }
-    
+
     @PostMapping("/logar")
-    public String logar(@ModelAttribute UserRequestDTO credenciais, HttpSession session){
+    public String logar(@ModelAttribute UserRequestDTO credenciais, HttpSession session) {
         String token = authService.logar(credenciais);
-        System.out.println("token: "+token);
+        System.out.println("token: " + token);
         session.setAttribute("token", token);
         return "redirect:/";
     }
-    
+
     @GetMapping("/registrar")
-    public String registrar(Model model){
+    public String registrar(Model model) {
         UserDTO newUser = new UserDTO();
         model.addAttribute("user", newUser);
         return "registrar";
     }
-    
+
     @PostMapping("/registrar")
-    public String mandarRegistro(@ModelAttribute UserDTO user, RedirectAttributes redirectAttributes){
+    public String mandarRegistro(@ModelAttribute UserDTO user, RedirectAttributes redirectAttributes) {
         try {
             authService.registrar(user);
-            
+
             // Se o registro funcionar, envia uma mensagem de sucesso para a tela de login
             redirectAttributes.addFlashAttribute("mensagemSucesso", "Cadastro realizado com sucesso! Faça o login.");
             return "redirect:/login";
-            
+
         } catch (HttpStatusCodeException ex) {
             // Captura erros do backend (Ex: 400 - "Email já cadastrado", "Senha fraca", etc.)
             // ex.getStatusText() ou ex.getResponseBodyAsString() trazem o erro do backend
             String mensagemErroDoBackend = new ObjectMapper()
                     .readTree(
                             ex.getResponseBodyAsString()
-                    ).get("message").asString(); 
+                    ).get("message").asString();
             redirectAttributes.addFlashAttribute(
-                    "erroServidor", 
+                    "erroServidor",
                     mensagemErroDoBackend
             );
-           
-            
+
             return "redirect:/registrar"; // Redireciona de volta para o formulário mantendo o aviso
-            
+
         } catch (Exception e) {
-            
+
             redirectAttributes.addFlashAttribute("erroServidor", e.getMessage());
             return "redirect:/registrar";
         }
     }
-    
+
     @GetMapping("/editais")
-    public String editais(Model model){
+    public String editais(Model model) {
         EditalDTO edital = new EditalDTO();
         model.addAttribute("edital", edital);
         return "editais";
     }
 
-
     @GetMapping("/logout")
-    public String logout(HttpSession session){
-        session.setAttribute("token", "");
+    public String logout(HttpSession session) {
+        session.invalidate();
         return "redirect:/login";
     }
 }
